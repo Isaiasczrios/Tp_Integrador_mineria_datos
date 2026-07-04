@@ -1,14 +1,5 @@
-# -*- coding: utf-8 -*-
-"""01_Dataset.py
-
-Adaptado desde Colab para despliegue en Streamlit Community Cloud.
-"""
-
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
 
 st.title("🗃️ Inspección del Dataset")
 st.markdown("---")
@@ -28,15 +19,10 @@ except FileNotFoundError:
             # Intento 3: Por si lo pusiste adentro de la carpeta app/
             df_clean = pd.read_csv('app/streaming_users_clean.csv')
         except FileNotFoundError:
-            # Si falla todo, mostramos un mensaje de error claro en la web
-            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en el repositorio de GitHub. Por favor, asegúrate de haberlo subido.")
+            # Si falla todo, mostramos un error en rojo
+            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en GitHub.")
             st.stop()
 # ==========================================
-
-# (A partir de aquí, dejas el resto de tu código de gráficos tal como estaba)
-sns.set_theme(style="whitegrid")
-# ...
-df_clean = pd.read_csv(CSV_PATH)
 
 st.markdown("### 📋 Descripción General")
 st.write(f"El conjunto de datos final procesado cuenta con **{df_clean.shape[0]}** filas y **{df_clean.shape[1]}** columnas.")
