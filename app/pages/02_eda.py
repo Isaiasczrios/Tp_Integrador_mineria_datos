@@ -1,39 +1,27 @@
-# -*- coding: utf-8 -*-
-"""02_EDA.py
-
-Adaptado desde Colab para despliegue en Streamlit Community Cloud.
-"""
-
-import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+st.title("📊 Análisis Exploratorio de Datos (EDA)")
+st.markdown("---")
+
 # ==========================================
 # CÓDIGO BLINDADO PARA ENCONTRAR EL CSV
 # ==========================================
 try:
-    # Intento 1: Ruta ideal (Si respetaste la estructura data/processed/ en GitHub)
     df_clean = pd.read_csv('data/processed/streaming_users_clean.csv')
 except FileNotFoundError:
     try:
-        # Intento 2: Por si subiste el CSV suelto en la raíz de tu GitHub
         df_clean = pd.read_csv('streaming_users_clean.csv')
     except FileNotFoundError:
         try:
-            # Intento 3: Por si lo pusiste adentro de la carpeta app/
             df_clean = pd.read_csv('app/streaming_users_clean.csv')
         except FileNotFoundError:
-            # Si falla todo, mostramos un mensaje de error claro en la web
-            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en el repositorio de GitHub. Por favor, asegúrate de haberlo subido.")
+            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en GitHub.")
             st.stop()
 # ==========================================
 
-# (A partir de aquí, dejas el resto de tu código de gráficos tal como estaba)
-sns.set_theme(style="whitegrid")
-
-df_clean = pd.read_csv(CSV_PATH)
 sns.set_theme(style="whitegrid")
 
 # --- VISUALIZACIONES UNIVARIADAS ---
@@ -43,7 +31,7 @@ col1, col2 = st.columns(2)
 with col1:
     fig, ax = plt.subplots()
     sns.histplot(data=df_clean, x='age', bins=15, kde=True, color='skyblue', ax=ax)
-    ax.set_title('Distribución de Edad de los Usuarios')
+    ax.set_title('Distribución de Edad')
     st.pyplot(fig)
     st.caption("**Interpretación:** La población se concentra en un rango adulto-joven de entre 25 y 40 años.")
 
@@ -53,7 +41,7 @@ with col2:
     sns.barplot(x=country_counts.values, y=country_counts.index, palette='viridis', ax=ax)
     ax.set_title('Volumen de Usuarios por País')
     st.pyplot(fig)
-    st.caption("**Interpretación:** Distribución geográfica regional equilibrada tras consolidar los errores de tipeo.")
+    st.caption("**Interpretación:** Distribución geográfica equilibrada tras consolidar errores.")
 
 # --- VISUALIZACIONES BIVARIADAS ---
 st.markdown("## 📊 2. Relaciones Bivariadas")
@@ -64,14 +52,14 @@ with col3:
     sns.boxplot(data=df_clean, x='subscription_plan', y='monthly_watch_time_mins', palette='Set2', ax=ax)
     ax.set_title('Consumo Mensual según Plan')
     st.pyplot(fig)
-    st.caption("**Interpretación:** Los planes Premium y Estándar registran medianas de visualización marcadamente superiores.")
+    st.caption("**Interpretación:** Premium y Estándar registran medianas superiores.")
 
 with col4:
     fig, ax = plt.subplots()
     sns.scatterplot(data=df_clean, x='age', y='customer_support_tickets', alpha=0.5, color='coral', ax=ax)
     ax.set_title('Edad vs. Tickets de Soporte')
     st.pyplot(fig)
-    st.caption("**Interpretación:** No se observa correlación lineal. Las incidencias técnicas ocurren de forma ajena a la edad.")
+    st.caption("**Interpretación:** No se observa correlación lineal. Incidencias ajenas a la edad.")
 
 # --- VISUALIZACIÓN MULTIVARIADA ---
 st.markdown("## 🔮 3. Análisis Multivariado")
@@ -81,6 +69,5 @@ ax_multi.set_title('Consumo por Edad Condicionado por el Plan')
 st.pyplot(fig_multi)
 st.markdown(
     "**Interpretación Obligatoria:** La visualización expone una clara estratificación horizontal. "
-    "El factor determinante en el nivel de consumo de minutos mensuales es el **Plan de Suscripción**, "
-    "operando de manera independiente a la edad cronológica del usuario."
+    "El factor determinante en el nivel de consumo es el **Plan de Suscripción**."
 )
