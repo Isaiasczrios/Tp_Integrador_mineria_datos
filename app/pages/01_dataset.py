@@ -11,22 +11,6 @@ import pandas as pd
 st.title("🗃️ Inspección del Dataset")
 st.markdown("---")
 
-# Ruta del CSV relativa a la ubicación de este script (funciona sin importar
-# desde qué directorio de trabajo Streamlit Cloud ejecute la app)
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CANDIDATE_PATHS = [
-    os.path.join(SCRIPT_DIR, 'streaming_users_clean.csv'),            # misma carpeta que el script
-    os.path.join(SCRIPT_DIR, '..', 'streaming_users_clean.csv'),      # un nivel arriba (app/)
-    os.path.join(SCRIPT_DIR, '..', '..', 'streaming_users_clean.csv'),# raíz del repo
-]
-CSV_PATH = next((p for p in CANDIDATE_PATHS if os.path.exists(p)), None)
-if CSV_PATH is None:
-    st.error(
-        "No se encontró 'streaming_users_clean.csv'. Se buscó en:\n\n"
-        + "\n".join(f"- {os.path.normpath(p)}" for p in CANDIDATE_PATHS)
-        + "\n\nVerificá que el archivo esté subido a GitHub en alguna de esas rutas."
-    )
-    st.stop()
 df_clean = pd.read_csv(CSV_PATH)
 
 st.markdown("### 📋 Descripción General")
