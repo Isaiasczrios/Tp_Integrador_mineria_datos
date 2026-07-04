@@ -17,7 +17,7 @@ st.markdown("### 👥 Integrantes del Grupo")
 st.write("* **Carlos Isaias Cazazola Rios**")
 
 st.markdown("### 📌 Detalles de Entrega")
-st.write("**Comicion: ** mañana")
+st.write("**Comicion: **"" mañana")
 st.write("**Fecha:** Julio 2026")
 
 st.markdown("### 📝 Contexto Breve")
