@@ -1,0 +1,11 @@
+Paso,Descripcion,Filas,Nulos,Retencion (%)
+0. Estado Inicial,Carga del dataset original sin modificaciones,8160,753,100.0
+4.1.2. Corrección Edad Cero,Imputación de 24 registros con edad 0 por la moda,8160,753,100.0
+4.1. Tratamiento Outliers Edad,Imputación del valor atípico (150 y edades negativas) en edad por la moda robusta,8160,753,100.0
+4.2. Tratamiento Outliers Consumo Mensual,Imputación de valores atípicos (mayor a 2000 o menor a 0) en monthly_watch_time_mins por la media,8160,753,100.0
+5. Imputación NaNs Consumo,Sustitución de valores faltantes en monthly_watch_time_mins por la mediana,8160,560,100.0
+1. Limpieza de Tipeo,Estandarización de variables categóricas (country) a formato Title Case y mapeo de abreviaturas,8160,560,100.0
+2. Tipificación Temporal,Conversión de last_login_date de tipo object a datetime,8160,1009,100.0
+2.1. Corrección Fechas Futuras,Imputación de 15 fechas posteriores al 2026-07-02 por la mediana,8160,1009,100.0
+3. Tratamiento Outliers,Imputación de tickets (valores fuera de 0-20) por la mediana robusta,8160,1009,100.0
+5.2. Imputación Fecha,Sustitución de 0 nulos en last_login_date por la mediana,8160,240,100.0
