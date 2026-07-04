@@ -13,20 +13,6 @@ import seaborn as sns
 st.title("📊 Análisis Exploratorio de Datos (EDA)")
 st.markdown("---")
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CANDIDATE_PATHS = [
-    os.path.join(SCRIPT_DIR, 'streaming_users_clean.csv'),
-    os.path.join(SCRIPT_DIR, '..', 'streaming_users_clean.csv'),
-    os.path.join(SCRIPT_DIR, '..', '..', 'streaming_users_clean.csv'),
-]
-CSV_PATH = next((p for p in CANDIDATE_PATHS if os.path.exists(p)), None)
-if CSV_PATH is None:
-    st.error(
-        "No se encontró 'streaming_users_clean.csv'. Se buscó en:\n\n"
-        + "\n".join(f"- {os.path.normpath(p)}" for p in CANDIDATE_PATHS)
-        + "\n\nVerificá que el archivo esté subido a GitHub en alguna de esas rutas."
-    )
-    st.stop()
 df_clean = pd.read_csv(CSV_PATH)
 sns.set_theme(style="whitegrid")
 
