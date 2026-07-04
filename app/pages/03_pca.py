@@ -16,20 +16,26 @@ from sklearn.decomposition import PCA
 st.title("🔮 Reducción de Dimensionalidad (PCA)")
 st.markdown("---")
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CANDIDATE_PATHS = [
-    os.path.join(SCRIPT_DIR, 'streaming_users_clean.csv'),
-    os.path.join(SCRIPT_DIR, '..', 'streaming_users_clean.csv'),
-    os.path.join(SCRIPT_DIR, '..', '..', 'streaming_users_clean.csv'),
-]
-CSV_PATH = next((p for p in CANDIDATE_PATHS if os.path.exists(p)), None)
-if CSV_PATH is None:
-    st.error(
-        "No se encontró 'streaming_users_clean.csv'. Se buscó en:\n\n"
-        + "\n".join(f"- {os.path.normpath(p)}" for p in CANDIDATE_PATHS)
-        + "\n\nVerificá que el archivo esté subido a GitHub en alguna de esas rutas."
-    )
-    st.stop()
+try:
+    # Intento 1: Ruta ideal (Si respetaste la estructura data/processed/ en GitHub)
+    df_clean = pd.read_csv('data/processed/streaming_users_clean.csv')
+except FileNotFoundError:
+    try:
+        # Intento 2: Por si subiste el CSV suelto en la raíz de tu GitHub
+        df_clean = pd.read_csv('streaming_users_clean.csv')
+    except FileNotFoundError:
+        try:
+            # Intento 3: Por si lo pusiste adentro de la carpeta app/
+            df_clean = pd.read_csv('app/streaming_users_clean.csv')
+        except FileNotFoundError:
+            # Si falla todo, mostramos un mensaje de error claro en la web
+            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en el repositorio de GitHub. Por favor, asegúrate de haberlo subido.")
+            st.stop()
+# ==========================================
+
+# (A partir de aquí, dejas el resto de tu código de gráficos tal como estaba)
+sns.set_theme(style="whitegrid")
+# ...
 df_clean = pd.read_csv(CSV_PATH)
 variables_num = ['age', 'monthly_watch_time_mins', 'customer_support_tickets']
 
