@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""03_PCA.py
-
-Adaptado desde Colab para despliegue en Streamlit Community Cloud.
-"""
-
-import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -16,34 +9,28 @@ from sklearn.decomposition import PCA
 st.title("🔮 Reducción de Dimensionalidad (PCA)")
 st.markdown("---")
 
+# ==========================================
+# CÓDIGO BLINDADO PARA ENCONTRAR EL CSV
+# ==========================================
 try:
-    # Intento 1: Ruta ideal (Si respetaste la estructura data/processed/ en GitHub)
     df_clean = pd.read_csv('data/processed/streaming_users_clean.csv')
 except FileNotFoundError:
     try:
-        # Intento 2: Por si subiste el CSV suelto en la raíz de tu GitHub
         df_clean = pd.read_csv('streaming_users_clean.csv')
     except FileNotFoundError:
         try:
-            # Intento 3: Por si lo pusiste adentro de la carpeta app/
             df_clean = pd.read_csv('app/streaming_users_clean.csv')
         except FileNotFoundError:
-            # Si falla todo, mostramos un mensaje de error claro en la web
-            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en el repositorio de GitHub. Por favor, asegúrate de haberlo subido.")
+            st.error("🚨 Error crítico: No se encuentra el archivo 'streaming_users_clean.csv' en GitHub.")
             st.stop()
 # ==========================================
 
-# (A partir de aquí, dejas el resto de tu código de gráficos tal como estaba)
-sns.set_theme(style="whitegrid")
-# ...
-df_clean = pd.read_csv(CSV_PATH)
 variables_num = ['age', 'monthly_watch_time_mins', 'customer_support_tickets']
 
 st.markdown("### 🛠️ Configuración de Escalamiento")
 st.info(
     "**Condición No Negociable:** Se aplicó un escalamiento Z-score (`StandardScaler`) previo al algoritmo. "
-    "Esto iguala las magnitudes numéricas de las variables (minutos vs. unidades de tickets), evitando sesgos artificiales "
-    "en el cálculo de las componentes principales."
+    "Esto iguala las magnitudes numéricas evitando sesgos artificiales."
 )
 
 # Preparación segura y remoción de NaNs
@@ -54,7 +41,7 @@ pca = PCA()
 X_pca = pca.fit_transform(X_scaled)
 var_explicada = pca.explained_variance_ratio_
 
-# Visualización 1: Scree Plot (Máximo 2 permitidos)
+# Visualización 1: Scree Plot 
 st.markdown("### 📈 1. Varianza Explicada Acumulada")
 fig, ax = plt.subplots(figsize=(6, 3))
 ax.plot(range(1, len(var_explicada) + 1), np.cumsum(var_explicada), marker='o', linestyle='--', color='darkblue')
@@ -73,5 +60,5 @@ st.dataframe(loadings.round(3))
 st.markdown(
     "**Interpretación de Componentes:**\n"
     "* **CP1 (Perfil de Madurez y Asistencia):** Representa de forma conjunta a la edad y a los tickets técnicos abiertos.\n"
-    "* **CP2 (Eje de Intensidad de Consumo):** Dominada casi en su totalidad por los minutos mensuales, aislando el comportamiento de visualización."
+    "* **CP2 (Eje de Intensidad de Consumo):** Dominada casi en su totalidad por los minutos mensuales."
 )
